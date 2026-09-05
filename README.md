@@ -4,7 +4,7 @@ Interactive replica of [Codenotch](https://github.com/vinzdg/codenotch) — Vinz
 
 Original announcement: [x.com/hivinz_/status/2096256684801060980](https://x.com/hivinz_/status/2096256684801060980)
 
-**Live demo:** https://chilly-lichen-8bk6.here.now/
+**Live demo:** https://quiet-shrine-4fx4.here.now/
 
 ## What this is
 
@@ -16,7 +16,7 @@ This replica keeps that layout and adds:
 - **One on/off switch per model** in Settings, matching Codenotch’s Integrations row
 - Edge picker: right, left, top, bottom
 
-Numbers are demo readings in the same shape as the design frame (73% / 21% / 52%). This is a visual replica, not a live quota client.
+Numbers are demo readings in the same shape as the design frame (73% / 21% / 52%). Layout, flares, rings, and colour bands follow `vinzdg/codenotch` (`Design.scale`, `NotchLayout`, `SideNotchShape`). This is a visual replica, not a live quota client.
 
 ## Run locally
 
