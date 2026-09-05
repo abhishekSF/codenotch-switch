@@ -6,8 +6,83 @@
   <title>Codenotch Switch — Gemini · ChatGPT · Grok</title>
   <meta name="description" content="A replica of Codenotch with switches for Gemini, ChatGPT, and Grok. Side-notch LLM usage tracker.">
   <link rel="stylesheet" href="styles.css">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23000'/%3E%3Ccircle cx='16' cy='16' r='8' fill='none' stroke='%2300FF88' stroke-width='2.4' stroke-dasharray='30 20' stroke-linecap='round' transform='rotate(-90 16 16)'/%3E%3C/svg%3E">
 </head>
 <body>
-  <p>See repository files for the full app. Placeholder if push is split.</p>
+  <div class="desktop">
+    <div class="wallpaper" aria-hidden="true"></div>
+    <div class="grain" aria-hidden="true"></div>
+
+    <header class="menubar">
+      <div class="menubar-left">
+        <span class="apple" aria-hidden="true"></span>
+        <strong>Codenotch</strong>
+        <span class="quiet">File</span>
+        <span class="quiet">Edit</span>
+        <span class="quiet">View</span>
+      </div>
+      <div class="menubar-right">
+        <span class="quiet" id="clock"></span>
+      </div>
+    </header>
+
+    <div class="notch-world" id="notch-world">
+      <div id="notch-layer" class="notch-layer"></div>
+    </div>
+  </div>
+
+  <div class="hud">
+    <p class="hud-kicker">Switch model</p>
+    <div class="model-switch" id="model-switch" role="tablist" aria-label="Switch between Gemini, ChatGPT and Grok">
+      <div class="model-switch-thumb" id="switch-thumb"></div>
+    </div>
+    <p class="hud-hint">Tap a ring for usage. Gear opens settings — one switch per model.</p>
+  </div>
+
+  <button class="settings-fab" id="settings-fab" type="button" aria-label="Open settings">
+    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8">
+      <circle cx="12" cy="12" r="3.2"/>
+      <path d="M12 3.2v1.8M12 19v1.8M4.9 6.4l1.3 1.3M17.8 16.3l1.3 1.3M3.2 12h1.8M19 12h1.8M4.9 17.6l1.3-1.3M17.8 7.7l1.3-1.3"/>
+    </svg>
+  </button>
+
+  <div class="sheet-backdrop" id="sheet-backdrop" hidden>
+    <section class="sheet" role="dialog" aria-labelledby="sheet-title">
+      <header class="sheet-head">
+        <h2 id="sheet-title">Settings</h2>
+        <button type="button" class="sheet-close" id="sheet-close" aria-label="Close">Done</button>
+      </header>
+
+      <div class="sheet-body">
+        <section class="group">
+          <h3>Integrations</h3>
+          <p class="group-note">One switch per model. Off hides the ring and forgets the demo reading. On brings it back.</p>
+          <div id="account-rows"></div>
+        </section>
+
+        <section class="group">
+          <h3>Appearance</h3>
+          <label class="row">
+            <span>Edge</span>
+            <div class="seg" id="edge-seg"></div>
+          </label>
+          <p class="caption" id="edge-caption"></p>
+        </section>
+
+        <section class="group">
+          <h3>About</h3>
+          <p class="caption">
+            Interactive replica of
+            <a href="https://github.com/vinzdg/codenotch" target="_blank" rel="noreferrer">Codenotch</a>
+            by
+            <a href="https://x.com/hivinz_/status/2096256684801060980" target="_blank" rel="noreferrer">@hivinz_</a>.
+            Original tracks Claude Code, Cursor, Codex and Antigravity. This demo swaps in Gemini, ChatGPT and Grok, with the same side-notch, rings, and per-provider switches.
+          </p>
+        </section>
+      </div>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
 </body>
 </html>
