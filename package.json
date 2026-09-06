@@ -1,0 +1,14 @@
+{
+  "name": "codenotch-switch",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Desktop overlay replica of Codenotch with Gemini, ChatGPT, and Grok.",
+  "main": "host/main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^36.7.4"
+  }
+}

@@ -1,32 +1,48 @@
 # Codenotch Switch
 
-Interactive replica of [Codenotch](https://github.com/vinzdg/codenotch) — Vinz’s side-notch LLM usage tracker — with **Gemini, ChatGPT, and Grok** instead of Claude, Cursor, Codex, and Antigravity.
+A desktop overlay replica of [Codenotch](https://github.com/vinzdg/codenotch) by Vinz. The original tracks Claude, Cursor, Codex, and Antigravity. This replica switches Gemini, ChatGPT, and Grok.
 
 Original announcement: [x.com/hivinz_/status/2096256684801060980](https://x.com/hivinz_/status/2096256684801060980)
 
-**Live demo:** https://quiet-shrine-4fx4.here.now/
+The product is an always-on-top Electron window over your real desktop. It is not a website.
+
+## How to start
+
+Install dependencies:
+
+```sh
+npm install
+```
+
+Start the overlay:
+
+```sh
+npm start
+```
+
+On this Linux VM, start it on the desktop display:
+
+```sh
+DISPLAY=:1 npm start
+```
+
+On Linux, install `xdotool` if the notch does not receive clicks. The host reads the pointer with it while the window is glass.
+
+Quit from the tray. The tray also has Settings.
+
+You should see the black notch on your real desktop, the Gemini / ChatGPT / Grok switch, and the settings orb. Clicks on empty desktop pass through. Electron loads `overlay.html`.
 
 ## What this is
 
-Codenotch pins a black side-notch to a screen edge. Each ring is a model. The arc is how much of the current session you have burned. Hover (or tap) a ring for the detail card: session window, longer window, reset copy.
+Codenotch pins a black side-notch to a screen edge. Each ring is a model. The arc is how much of the current session you have burned. Hover a ring for the detail card: session window, longer window, reset copy.
 
 This replica keeps that layout and adds:
 
-- A **switch** for Gemini / ChatGPT / Grok (the control at the bottom left)
-- **One on/off switch per model** in Settings, matching Codenotch’s Integrations row
+- A switch for Gemini / ChatGPT / Grok
+- One on/off switch per model in Settings
 - Edge picker: right, left, top, bottom
 
 Numbers are demo readings in the same shape as the design frame (73% / 21% / 52%). Layout, flares, rings, and colour bands follow `vinzdg/codenotch` (`Design.scale`, `NotchLayout`, `SideNotchShape`). This is a visual replica, not a live quota client.
-
-## Run locally
-
-Open `index.html` in a browser, or:
-
-```sh
-python3 -m http.server 4173
-```
-
-Then visit http://localhost:4173
 
 ## Credit
 
