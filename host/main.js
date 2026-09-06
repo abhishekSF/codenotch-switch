@@ -2,11 +2,6 @@ const { app, BrowserWindow, ipcMain, screen, Tray, Menu, nativeImage } = require
 const { execFileSync } = require("child_process");
 const path = require("path");
 
-// Linux paints window alpha only if this switch is set before ready.
-if (process.platform === "linux") {
-  app.commandLine.appendSwitch("enable-transparent-visuals");
-}
-
 let overlay = null;
 let tray = null;
 let lastBounds = null;
