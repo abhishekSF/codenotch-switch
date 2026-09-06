@@ -95,14 +95,6 @@ function css(n) {
   return `${n.toFixed(3)}px`;
 }
 
-function clockCopy(date) {
-  const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-  let h = date.getHours();
-  h = h % 12 || 12;
-  return `${days[date.getDay()]} ${date.getDate()} ${months[date.getMonth()]} ${h}:${pad(date.getMinutes())}`;
-}
-
 function resetCopy(resetsAt, now) {
   const seconds = (resetsAt - now) / 1000;
   if (seconds <= 0) return "Resetting…";
@@ -602,6 +594,7 @@ function selectProvider(id) {
   state.selected = id;
   renderSwitch();
   mountTooltip();
+  reportOverlay();
 }
 
 function styleTooltip(layer) {
@@ -666,32 +659,74 @@ function mountTooltip() {
   styleTooltip(layer);
 }
 
+function liveSelectors() {
+  const sheet = document.getElementById("sheet-backdrop");
+  if (sheet && !sheet.hidden) return [".sheet", ".hud"];
+  return [".notch-wrap", "#orb", ".hud", ".tooltip"];
+}
+
+function measureMask() {
+  const sheet = document.getElementById("sheet-backdrop");
+  const sheetOpen = Boolean(sheet && !sheet.hidden);
+  const live = [];
+  for (const selector of liveSelectors()) {
+    const el = document.querySelector(selector);
+    if (!el) continue;
+    const box = el.getBoundingClientRect();
+    if (box.width <= 0 || box.height <= 0) continue;
+    live.push({ x: box.x, y: box.y, width: box.width, height: box.height });
+  }
+  return { coverage: "regions", live, sheetOpen };
+}
+
+function reportOverlay() {
+  window.codenotchOverlay?.reportMask?.(measureMask());
+}
+
+function targetIsLive(node) {
+  if (!node || !node.closest) return false;
+  return Boolean(node.closest(liveSelectors().join(", ")));
+}
+
+function pointInLive(x, y) {
+  return measureMask().live.some((box) => (
+    x >= box.x && y >= box.y && x < box.x + box.width && y < box.y + box.height
+  ));
+}
+
+let lastHover = null;
+
+function sendHover(over) {
+  if (over === lastHover) return;
+  lastHover = over;
+  window.codenotchOverlay?.setPointerOverChrome?.(over);
+}
+
 function openSheet() {
   document.getElementById("sheet-backdrop").hidden = false;
+  reportOverlay();
 }
 
 function closeSheet() {
   document.getElementById("sheet-backdrop").hidden = true;
+  reportOverlay();
 }
 
 function render() {
-  document.getElementById("clock").textContent = clockCopy(new Date(state.now));
   renderSwitch();
   renderSettings();
   renderNotch();
   document.getElementById("orb")?.addEventListener("click", openSheet);
+  reportOverlay();
 }
 
-document.getElementById("settings-fab").addEventListener("click", openSheet);
 document.getElementById("sheet-close").addEventListener("click", closeSheet);
-document.getElementById("sheet-backdrop").addEventListener("click", (e) => {
-  if (e.target.id === "sheet-backdrop") closeSheet();
-});
+
+document.addEventListener("pointermove", (event) => {
+  sendHover(targetIsLive(event.target) || pointInLive(event.clientX, event.clientY));
+}, { passive: true });
+
+document.addEventListener("pointerleave", () => sendHover(false));
 
 window.addEventListener("resize", render);
 render();
-
-setInterval(() => {
-  state.now = Date.now();
-  document.getElementById("clock").textContent = clockCopy(new Date(state.now));
-}, 1000);
